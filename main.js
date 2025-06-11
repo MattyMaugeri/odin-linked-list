@@ -1,32 +1,37 @@
 import { LinkedList } from "./LinkedList.js";
-import { Node } from "./Node.js";
 
-let node1 = new Node(5);
-let node2 = new Node(10);
+const list = new LinkedList();
 
-let list = new LinkedList(node1);
-node1.next = node2;
+list.append("dog");
+list.append("cat");
+list.append("turtle");
 
+console.log('Original List: ', list.toString());
 
-list.append(500);
-list.prepend(1000);
+list.prepend('bird');
 
-console.log('Complete List: ');
-list.print();
+console.log('Prepend (bird): ', list.toString());
 
 console.log('List size: ', list.size());
 
-console.log('First node: ', list.first());
+console.log('First Node: ', list.first());
 
-console.log('Last node: ', list.last());
+console.log('Last Node: ', list.last());
 
-let idx = 0;
-console.log(`Node at index ${idx}: `, list.at(idx));
+let idx = 1;
+console.log(`Node at index ${idx}: ${list.at(idx)}`);
 
-list.print();
+list.pop();
+console.log('List after pop(): ', list.toString());
 
-console.log(list.contains(500));
+let val = 'turtle';
+console.log(`List contains (${val}): ${list.contains(val)}`);
 
-console.log(list.findIndexOf(1000));
+let indexOfValue = 'cat';
+console.log(`Find index of ${indexOfValue} ${list.findIndexOf(indexOfValue)}`);
 
-console.log(list.toString());
+list.insertAt('shark', 1);
+console.log(`List after inserting shark at index 1: `, list.toString());
+
+list.removeAt(2);
+console.log('List after removing node at index 2: ', list.toString());

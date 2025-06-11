@@ -1,6 +1,4 @@
-import { log } from "node:console";
 import { Node } from "./Node.js";
-import util from 'node:util';
 
 export class LinkedList {
 
@@ -8,14 +6,11 @@ export class LinkedList {
         this.head = head;
     }
 
-    print() {
-        console.log(util.inspect(this.head, { depth: null, colors: true }));
-    }
-
     append(value) {
         // Check if head is null first
         if (this.head === null) {
             this.head = new Node(value);
+            return;
         }
 
         let node = this.head;
@@ -52,7 +47,7 @@ export class LinkedList {
     first() {
         if (this.head === null) return null;
 
-        return this.head;
+        return this.head.data;
     }
 
     last() {
@@ -63,22 +58,17 @@ export class LinkedList {
             current = current.next
         }
 
-        return current;
+        return current.data;
     }
 
     at(index) {
-        if (this.head === null) return null;
-
         let current = this.head;
-
         let count = 0;
-        while (current !== null && count !== index) {
+
+        while (current !== null) {
+            if (count === index) return current.data;
             current = current.next;
             count++;
-        }
-
-        if (current !== null) {
-            return current;
         }
 
         return null;
@@ -104,24 +94,18 @@ export class LinkedList {
 
         let curr = this.head;
         while (curr) {
-            if (curr.data === value) {
-                return true;
-            }
+            if (curr.data === value) return true;
             curr = curr.next;
         }
         return false;
     }
 
     findIndexOf(value) {
-        if (this.head === null) return null;
-
         let curr = this.head;
         let idx = 0;
 
-        while (curr) {
-            if (curr.data === value) {
-                return idx;
-            }
+        while (curr !== null) {
+            if (curr.data === value) return idx;
             curr = curr.next;
             idx++;
         }
@@ -129,19 +113,64 @@ export class LinkedList {
     }
 
     toString() {
-        if (this.head === null) return '';
-
         let string = '';
         let curr = this.head;
 
         while (curr) {
             if (curr.next === null) {
                 string += `( ${curr.data} ) -> null`;
-                break;
+                return string;
             }
             string += `( ${curr.data} ) -> `;
             curr = curr.next;
         }
-        return string;
+    }
+
+    insertAt(value, index) {
+        let node = new Node(value);
+
+        if (index <= 0 || this.head === null) {
+            node.next = this.head;
+            this.head = node;
+            return;
+        }
+
+        let curr = this.head;
+        let prev = null;
+        let count = 0;
+
+        while (curr !== null) {
+            if (count === index) {
+                node.next = curr;
+                prev.next = node;
+                return;
+            }
+            prev = curr;
+            curr = curr.next;
+            count++;
+        }
+
+
+    }
+
+    removeAt(index) {
+        if (index === 0) {
+            this.head = this.head.next;
+            return;
+        }
+
+        let curr = this.head;
+        let prev = null;
+        let count = 0;
+
+        while (curr !== null) {
+            if (count === index) {
+                prev.next = curr.next;
+                return;
+            }
+            prev = curr;
+            curr = curr.next;
+            count++;
+        }
     }
 }
